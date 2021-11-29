@@ -3,11 +3,12 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ForecastCard } from './forecastCard/ForecastCard'
+import { FocusedWeather } from './focusedWeather/FocusedWeather';
 
-const options = (location) => {
+const options = (location, type) => {
   return {
     method: 'GET',
-    url: 'http://api.openweathermap.org/data/2.5/forecast?',
+    url: type === 'current'? 'http://api.openweathermap.org/data/2.5/weather?' : 'http://api.openweathermap.org/data/2.5/forecast?',
     params: {
       q: location,
       appid: 'cfeb84b58ddcc4c33761c0d5d58842f9'
@@ -18,12 +19,13 @@ const options = (location) => {
   }
 };
 
+
 const convertToFarenheit = (kelvin) => {
-  return (((9 / 5) * (kelvin - 273)) + 32)
+  return Math.round(((9 / 5) * (kelvin - 273)) + 32)
 }
 
 const convertToCelcius = (kelvin) => {
-  return (kelvin - 273.15)
+  return Math.round(kelvin - 273.15)
 }
 
 
@@ -31,8 +33,17 @@ const convertToCelcius = (kelvin) => {
 function App() {
 
   const [forecast, setForecast] = useState()
+  const [currentWeather, setCurrentWeather] = useState()
   const [location, setLocation] = useState("Minneapolis,us")
   const [inputLoc, setInputLoc] = useState('')
+
+
+  // const [offsetLeft, setOffsetLeft] = useState(500)
+
+
+  // const forecastListStyle= {
+  //   transform: 'translateX('+ offsetLeft + 'px)'
+  // }
 
 
   const handleKeyDown = (event) => {
@@ -42,9 +53,16 @@ function App() {
   }
 
   useEffect(() => {
-    axios(options(location)).then((response) => {
+    axios(options(location, 'fiveDay')).then((response) => {
       console.log(response.data)
       setForecast(response.data);
+    }).catch((error) => {
+      console.error(error);
+    });
+
+    axios(options(location, 'current')).then((response) => {
+      console.log(response.data)
+      setCurrentWeather(response.data)
     }).catch((error) => {
       console.error(error);
     });
@@ -56,7 +74,7 @@ function App() {
     if (forecast) {
       forecast.list.map(cast => {
         return listOfForecasts.push(<li key={cast.dt}>
-          <ForecastCard temperature={Math.round(convertToFarenheit(cast.main.temp))} date={new Date(Date.parse(cast.dt_txt))} /></li>)
+          <ForecastCard cast={cast} temperature={convertToFarenheit(cast.main.temp)} date={new Date(Date.parse(cast.dt_txt))} /></li>)
       })
     }
     return listOfForecasts
@@ -66,9 +84,15 @@ function App() {
   return (
     <div className="App">
 
-      <input type="text" id="loc" value={inputLoc} onChange={e => setInputLoc(e.target.value)} onKeyDown={handleKeyDown} placeholder="Set a Location"></input>
-      <button onClick={() => setLocation(inputLoc)}>Submit</button>
-      <ul style={{ listStyle: "none" }}>{renderedForecasts()}</ul>
+      <div className="input_container">
+
+        <input type="text" id="loc" value={inputLoc} onChange={e => setInputLoc(e.target.value)} onKeyDown={handleKeyDown} placeholder="Set a Location"></input>
+        <button onClick={() => setLocation(inputLoc)}>Submit</button>
+      </div>
+      <div className="current">
+        <FocusedWeather weather={currentWeather}/>
+      </div>
+      <ul className="forecast_list" >{renderedForecasts()}</ul>
     </div>
   );
 }
