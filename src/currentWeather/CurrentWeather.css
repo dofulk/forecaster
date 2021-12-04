@@ -1,20 +1,28 @@
-.forecastcard {
-    margin: 10px;
-    height: 4em;
-}
-.forecastcard_temp {
+.city{
+    font-size: 3em;
 }
 
-.forecastcard_day {
+.temp{
+    font-size: 3em;
 }
-.forecastcard_icon {
+
+.icon {
+    font-size: 3em;
+
+
 }
-.forecastcard * {
+
+.currentweather {
+    height: 14em;
+}
+
+.currentweather * {
     animation-name: fadeInOpacity;
 	animation-iteration-count: 1;
 	animation-timing-function: ease-in;
 	animation-duration: 1s;
 }
+
 
 @keyframes fadeInOpacity {
 	0% {

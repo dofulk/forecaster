@@ -1,0 +1,25 @@
+.toggle{
+    border: 1px solid white;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+}
+
+
+
+.fahrenheit,
+.celcius {
+    padding: 10px;
+}
+
+.fahrenheit:hover,
+.celcius:hover {
+    background-color: #414856;
+    border-radius: 10px;
+}
+
+.fahrenheit[unit="fahrenheit"],
+.celcius[unit="celcius"] {
+    background-color: #414856;
+    border-radius: 10px;
+}

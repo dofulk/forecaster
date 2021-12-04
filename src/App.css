@@ -14,17 +14,33 @@
 }
 
 .forecast_list {
-  overflow-x: scroll;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   list-style: none;
   display: flex;
   flex-direction: row;
-  left: 0;
-  width: 100%;
   bottom: 0;
+  width: 100%;
+  opacity: 1;
 }
 
+.current {
+}
 .input_container {
   position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.input {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.toggle {
+  position: absolute;
+  right: 0;
   top: 0;
 }
