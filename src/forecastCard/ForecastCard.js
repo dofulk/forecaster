@@ -18,9 +18,6 @@ export const ForecastCard = ({ cast, getTemperature }) => {
     }
 
 
-const convertToFarenheit = (kelvin) => {
-    return Math.round(((9 / 5) * (kelvin - 273)) + 32)
-  }
 
 
 

@@ -1,14 +1,9 @@
 .forecastcard {
     margin: 10px;
     height: 4em;
-}
-.forecastcard_temp {
+	width: 5em;
 }
 
-.forecastcard_day {
-}
-.forecastcard_icon {
-}
 .forecastcard * {
     animation-name: fadeInOpacity;
 	animation-iteration-count: 1;

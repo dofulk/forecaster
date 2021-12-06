@@ -1,8 +1,7 @@
 import React from 'react';
-import { useEffect, useState } from 'react/cjs/react.development';
+import { useState } from 'react/cjs/react.development';
 import './Input.css'
 import { Lens } from '../Icons/Lens';
-import { Cloud } from '../Icons/Cloud';
 
 
 export const Input = ({ value, onChange, possibleLocations, setLocation, setInputLoc }) => {

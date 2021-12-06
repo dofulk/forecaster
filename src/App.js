@@ -14,7 +14,7 @@ const locationOptions = (loc) => {
     params: {
       lat: loc.lat,
       lon: loc.lon,
-      appid: 'cfeb84b58ddcc4c33761c0d5d58842f9'
+      appid: `${process.env.REACT_APP_API_KEY}`,
     },
     headers: {
 
@@ -28,7 +28,7 @@ const geoOptions = (loc) => {
     url: 'http://api.openweathermap.org/geo/1.0/direct?',
     params: {
       q: loc,
-      appid: 'cfeb84b58ddcc4c33761c0d5d58842f9',
+      appid: `${process.env.REACT_APP_API_KEY}`,
       limit: 5,
     },
     headers: {
@@ -37,6 +37,20 @@ const geoOptions = (loc) => {
   }
 }
 
+const reverseGeoOptions = (lat, lon) => {
+  return {
+    method: 'GET',
+    url: 'http://api.openweathermap.org/geo/1.0/reverse?',
+    params: {
+      lat: lat,
+      lon: lon,
+      appid: `${process.env.REACT_APP_API_KEY}`,
+    },
+    headers: {
+
+    }
+  }
+}
 
 const convertToFarenheit = (kelvin) => {
   return Math.round(((9 / 5) * (kelvin - 273)) + 32)
@@ -65,7 +79,7 @@ function App() {
 
 
   const getTemperature = (kelvin) => {
-    switch(unit) {
+    switch (unit) {
       case "fahrenheit":
         return convertToFarenheit(kelvin)
       case "celcius":
@@ -81,16 +95,21 @@ function App() {
     }
   }
 
+
+
   useEffect(() => {
     if (!navigator.geolocation) {
-      console.log('no geo access') 
+      console.log('no geo access')
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position.coords.latitude)
-        setLocation({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-          name: "Minneapolis"
+        axios(reverseGeoOptions(position.coords.latitude, position.coords.longitude)).then((response) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            name: response.data[0].name
+          })
+        }).catch((error) => {
+          console.error(error);
         })
       })
     }
@@ -106,12 +125,12 @@ function App() {
 
   useEffect(() => {
     if (location) {
-    axios(locationOptions(location)).then((response) => {
-      setWeather(response.data);
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
+      axios(locationOptions(location)).then((response) => {
+        setWeather(response.data);
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
   }, [location])
 
   useEffect(() => {
@@ -137,7 +156,7 @@ function App() {
     if (forecast) {
       forecast.map(cast => {
         return listOfForecasts.push(<li key={cast.dt}>
-          <ForecastCard cast={cast} getTemperature={getTemperature}/></li>)
+          <ForecastCard cast={cast} getTemperature={getTemperature} /></li>)
       })
     }
     return listOfForecasts
@@ -148,11 +167,11 @@ function App() {
     <div className="App">
 
       <div className="input_container">
-        <Input className="input" type="text" id="loc" value={inputLoc} onChange={e => setInputLoc(e.target.value)} onKeyDown={handleKeyDown} placeholder="Set a Location" possibleLocations={possibleLocations} setLocation={setLocation} setInputLoc={setInputLoc}></Input>
-        <Toggle className="toggle" unit={unit} setUnit={setUnit}/>
+        <Input className="search" type="text" id="loc" value={inputLoc} onChange={e => setInputLoc(e.target.value)} onKeyDown={handleKeyDown} placeholder="Set a Location" possibleLocations={possibleLocations} setLocation={setLocation} setInputLoc={setInputLoc}></Input>
+        <Toggle className="toggle" unit={unit} setUnit={setUnit} />
       </div>
       <div className="current">
-        {currentWeather && <CurrentWeather weather={currentWeather} location={location} getTemperature={getTemperature}/>}
+        {currentWeather && <CurrentWeather weather={currentWeather} location={location} getTemperature={getTemperature} />}
       </div>
       <ul className="forecast_list" >{renderedForecasts()}</ul>
     </div>

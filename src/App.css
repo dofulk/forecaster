@@ -33,14 +33,14 @@
   width: 100%;
 }
 
-.input {
+.search {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 20px;
+  top: 20px;
 }
 
 .toggle {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 20px;
+  top: 20px;
 }
