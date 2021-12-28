@@ -1,8 +1,26 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import React from 'react';
+import { fireEvent, screen, render } from '@testing-library/react'
+import App from './App'
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+
+jest.mock('axios')
+import axios from 'axios'
+
+axios.get.mockImplementation(async url => {
+    if (url === 'https://api.openweathermap.org/data/2.5/onecall?') {
+        Promise.resolve({
+            current: {
+                temp: 273.15
+            },
+            forecast: 'cold'
+        })
+    }
+})
+
+
+test('it should return ', () => {
+
+    render(<App />)
+
+    // expect(axios.get).toHaveBeenCalled()
+})

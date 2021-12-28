@@ -6,51 +6,11 @@ import { ForecastCard } from './forecastCard/ForecastCard'
 import { CurrentWeather } from './currentWeather/CurrentWeather';
 import { Input } from './Input/Input'
 import { Toggle } from './Toggle/Toggle';
+import { useDispatch, useSelector } from 'react-redux';
+import { currentWeatherSelector, forecastSelector, locationSelecter } from './redux/selectors';
+import { getWeatherByCoordinates, getWeatherByLocation } from './redux/actions';
 
-const locationOptions = (loc) => {
-  return {
-    method: 'GET',
-    url: 'https://api.openweathermap.org/data/2.5/onecall?',
-    params: {
-      lat: loc.lat,
-      lon: loc.lon,
-      appid: `${process.env.REACT_APP_API_KEY}`,
-    },
-    headers: {
 
-    }
-  }
-};
-
-const geoOptions = (loc) => {
-  return {
-    method: 'GET',
-    url: 'http://api.openweathermap.org/geo/1.0/direct?',
-    params: {
-      q: loc,
-      appid: `${process.env.REACT_APP_API_KEY}`,
-      limit: 5,
-    },
-    headers: {
-
-    }
-  }
-}
-
-const reverseGeoOptions = (lat, lon) => {
-  return {
-    method: 'GET',
-    url: 'http://api.openweathermap.org/geo/1.0/reverse?',
-    params: {
-      lat: lat,
-      lon: lon,
-      appid: `${process.env.REACT_APP_API_KEY}`,
-    },
-    headers: {
-
-    }
-  }
-}
 
 const convertToFarenheit = (kelvin) => {
   return Math.round(((9 / 5) * (kelvin - 273)) + 32)
@@ -64,18 +24,15 @@ const convertToCelcius = (kelvin) => {
 
 function App() {
 
-  const [weather, setWeather] = useState()
 
-  const [forecast, setForecast] = useState()
-  const [currentWeather, setCurrentWeather] = useState()
-  const [location, setLocation] = useState({
-    lat: 51.5072,
-    lon: 0,
-    name: "London"
-  })
-  const [possibleLocations, setPossibleLocations] = useState([])
-  const [inputLoc, setInputLoc] = useState('')
+
+  const forecast = useSelector(forecastSelector)
+  const currentWeather = useSelector(currentWeatherSelector)
   const [unit, setUnit] = useState("fahrenheit")
+  const location = useSelector(locationSelecter)
+
+  const dispatch = useDispatch()
+
 
 
   const getTemperature = (kelvin) => {
@@ -89,66 +46,24 @@ function App() {
     }
   }
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      setLocation(inputLoc)
-    }
-  }
-
-
 
   useEffect(() => {
     if (!navigator.geolocation) {
       console.log('no geo access')
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
-        axios(reverseGeoOptions(position.coords.latitude, position.coords.longitude)).then((response) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-            name: response.data[0].name
-          })
-        }).catch((error) => {
-          console.error(error);
-        })
+       dispatch(getWeatherByCoordinates(position.coords))
       })
     }
   }, [])
 
-
   useEffect(() => {
-    if (weather) {
-      setCurrentWeather(weather.current)
-      setForecast(weather.daily)
-    }
-  }, [weather])
+    dispatch(getWeatherByLocation(location))
+  }, [])
 
-  useEffect(() => {
-    if (location) {
-      axios(locationOptions(location)).then((response) => {
-        setWeather(response.data);
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-  }, [location])
 
-  useEffect(() => {
-    if (inputLoc.length >= 3) {
-      let timer = setTimeout(() => {
-        axios(geoOptions(inputLoc)).then((response) => {
-          setPossibleLocations(response.data)
-          console.log(response.data)
-        }).catch((error) => {
-          console.error(error);
-        });
 
-      }, 300);
-      return () => clearTimeout(timer)
-    } else {
-      setPossibleLocations([])
-    }
-  }, [inputLoc])
+
 
   const listOfForecasts = []
 
@@ -167,7 +82,7 @@ function App() {
     <div className="App">
 
       <div className="input_container">
-        <Input className="search" type="text" id="loc" value={inputLoc} onChange={e => setInputLoc(e.target.value)} onKeyDown={handleKeyDown} placeholder="Set a Location" possibleLocations={possibleLocations} setLocation={setLocation} setInputLoc={setInputLoc}></Input>
+        <Input className="search" type="text" id="loc" placeholder="Set a Location"></Input>
         <Toggle className="toggle" unit={unit} setUnit={setUnit} />
       </div>
       <div className="current">

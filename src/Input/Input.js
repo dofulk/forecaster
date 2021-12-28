@@ -1,50 +1,70 @@
 import React from 'react';
-import { useState } from 'react/cjs/react.development';
+import { useEffect, useState } from 'react/cjs/react.development';
 import './Input.css'
 import { Lens } from '../Icons/Lens';
+import { useDispatch, useSelector } from 'react-redux';
+import { possibleLocationsSelector } from '../redux/selectors';
+import { changePossibleLocations, getPossibleLocations, getWeatherByLocation } from '../redux/actions';
 
 
-export const Input = ({ value, onChange, possibleLocations, setLocation, setInputLoc }) => {
+export const Input = ({ setLocation }) => {
 
 
-    const [isFocused, setIsFoucuesd] = useState(false)
+    const [isFocused, setIsFocused] = useState(false)
+    const [inputLoc, setInputLoc] = useState("")
+    const possibleLocations = useSelector(possibleLocationsSelector)
+    const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        if (inputLoc.length >= 3) {
+            let timer = setTimeout(() => {
+                dispatch(getPossibleLocations(inputLoc))
+
+            }, 300);
+            return () => clearTimeout(timer)
+        } else {
+            dispatch(changePossibleLocations([]))
+        }
+    }, [inputLoc])
 
 
     const handleClick = (item) => {
-        setLocation({
+        dispatch(getWeatherByLocation({
             lat: item.lat,
             lon: item.lon,
             name: item.name
-        })
+        }))
         setInputLoc('')
     }
 
-
-
     return (
-        <div className="search">
+        <div className="search"
+
+
+        >
             <Lens className="search_symbol" ></Lens>
             <input className="search_input"
                 type="text"
                 placeholder="Change Location"
-                value={value}
-                onChange={(e) => onChange(e)}
-                onFocus={() => setIsFoucuesd(true)}
-                onBlur={() => setIsFoucuesd(false)}
+                value={inputLoc || ''}
+                onBlur={() => setIsFocused(false)}
+                onFocus={() => setIsFocused(true)}
+                onChange={(e) => setInputLoc(e.target.value)}
             />
 
 
-            
-           { (isFocused && possibleLocations.length) ? <div className="search_suggestion">
+
+            {(isFocused && possibleLocations.length) ? <div className="search_suggestion">
                 {
                     possibleLocations.map((item) => (
-                        <div key={item.lat} className="search_suggestion_item" onMouseDown={(e)=> e.preventDefault()} onClick={() => handleClick(item)} >
-                             <Lens className="search_suggestion_item_symbol" ></Lens>
+                        <div key={item.lat} className="search_suggestion_item" onMouseDown={(e) => e.preventDefault()} onClick={() => handleClick(item)}>
+                            <Lens className="search_suggestion_item_symbol" ></Lens>
                             {item.name}, {item.country === "US" ? item.state : item.country}
                         </div>
                     ))
-}
-            </div> : <div/>}
+                }
+            </div> : <div />}
         </div>
     );
 };
