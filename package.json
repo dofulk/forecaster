@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/user-event": "^12.8.3",
+    "@reduxjs/toolkit": "^1.7.1",  
     "axios": "^0.24.0",
     "downshift": "^6.1.7",
+    "msw": "^0.36.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -38,7 +38,10 @@
     ]
   },
   "devDependencies": {
+    "jest-environment-jsdom-sixteen": "^2.0.0",
     "@testing-library/react": "^12.1.2",
-    "react-scripts": "^3.4.4"
+    "react-scripts": "^3.4.4",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/user-event": "^12.8.3"
   }
 }

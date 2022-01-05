@@ -9,7 +9,7 @@ export const ForecastCard = ({ cast, getTemperature }) => {
     let getDay = () => {
         if (today.getDay() === date.getDay() && today.getDate() === date.getDate()) {
   
-            return "today"
+            return "Today"
         } else if (today.getDay() + 1 === date.getDay() || (today.getDay()=== 6  && date.getDay() === 0)) {
             return "Tommorow"
         } else {

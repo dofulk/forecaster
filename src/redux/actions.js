@@ -1,11 +1,6 @@
 import axios from "axios";
 
-const changeLocation = (location) => ({
-    type: 'CHANGE_LOCATION',
-    payload: {
-        location: location
-    }
-})
+
 export const changePossibleLocations = (possibleLocations) => ({
     type: 'CHANGE_POSSIBLE_LOCATIONS',
     payload: {

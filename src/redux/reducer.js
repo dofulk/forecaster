@@ -1,8 +1,8 @@
 
-const initialState = {
+export const initialState = {
     location: {
         lat: 51.5072,
-        lon: 0,
+        lon: -0.1276,
         name: "London"
     },
     possibleLocations: [

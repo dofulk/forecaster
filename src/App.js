@@ -49,7 +49,6 @@ function App() {
 
   useEffect(() => {
     if (!navigator.geolocation) {
-      console.log('no geo access')
     } else {
       navigator.geolocation.getCurrentPosition((position) => {
        dispatch(getWeatherByCoordinates(position.coords))

@@ -7,7 +7,7 @@ import { possibleLocationsSelector } from '../redux/selectors';
 import { changePossibleLocations, getPossibleLocations, getWeatherByLocation } from '../redux/actions';
 
 
-export const Input = ({ setLocation }) => {
+export const Input = () => {
 
 
     const [isFocused, setIsFocused] = useState(false)
@@ -17,16 +17,18 @@ export const Input = ({ setLocation }) => {
 
 
     useEffect(() => {
-        if (inputLoc.length >= 3) {
-            let timer = setTimeout(() => {
+        dispatch(changePossibleLocations([]))
+        let timer = setTimeout(() => {
+            if (inputLoc.length >= 3) {
+
                 dispatch(getPossibleLocations(inputLoc))
 
-            }, 300);
-            return () => clearTimeout(timer)
-        } else {
-            dispatch(changePossibleLocations([]))
-        }
+
+            }
+        }, 300);
+        return () => clearTimeout(timer)
     }, [inputLoc])
+
 
 
     const handleClick = (item) => {
@@ -55,7 +57,7 @@ export const Input = ({ setLocation }) => {
 
 
 
-            {(isFocused && possibleLocations.length) ? <div className="search_suggestion">
+            {(isFocused && possibleLocations && possibleLocations.length) ? <div className="search_suggestion">
                 {
                     possibleLocations.map((item) => (
                         <div key={item.lat} className="search_suggestion_item" onMouseDown={(e) => e.preventDefault()} onClick={() => handleClick(item)}>
