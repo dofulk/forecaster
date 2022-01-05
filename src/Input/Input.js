@@ -27,7 +27,7 @@ export const Input = () => {
             }
         }, 300);
         return () => clearTimeout(timer)
-    }, [inputLoc])
+    }, [inputLoc, dispatch])
 
 
 

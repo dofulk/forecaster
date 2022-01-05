@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { ForecastCard } from './forecastCard/ForecastCard'
 import { CurrentWeather } from './currentWeather/CurrentWeather';
 import { Input } from './Input/Input'
@@ -54,11 +53,11 @@ function App() {
        dispatch(getWeatherByCoordinates(position.coords))
       })
     }
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(getWeatherByLocation(location))
-  }, [])
+  }, [dispatch, location])
 
 
 
