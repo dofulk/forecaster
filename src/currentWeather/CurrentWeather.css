@@ -4,16 +4,8 @@
 
 .temp{
     font-size: 3em;
-}
-
-.icon {
-    font-size: 3em;
-
-
-}
-
-.currentweather {
-    height: 14em;
+	display: flex;
+	justify-content: center;
 }
 
 .currentweather * {

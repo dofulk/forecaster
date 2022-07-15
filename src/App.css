@@ -13,6 +13,10 @@
   position: relative;
 }
 
+.input_container {
+  background-color: 'red';
+}
+
 .forecast_list {
   align-items: center;
   justify-content: center;

@@ -84,7 +84,7 @@ function App() {
         <Toggle className="toggle" unit={unit} setUnit={setUnit} />
       </div>
       <div className="current">
-        {currentWeather && <CurrentWeather weather={currentWeather} location={location} getTemperature={getTemperature} />}
+        {currentWeather && <CurrentWeather weather={currentWeather} location={location} getTemperature={getTemperature} unit={unit} />}
       </div>
       <ul className="forecast_list" >{renderedForecasts()}</ul>
     </div>

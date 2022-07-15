@@ -35,7 +35,9 @@ export const Input = () => {
         dispatch(getWeatherByLocation({
             lat: item.lat,
             lon: item.lon,
-            name: item.name
+            name: item.name,
+            country: item.country,
+            state: item.state,
         }))
         setInputLoc('')
     }
@@ -45,6 +47,7 @@ export const Input = () => {
 
 
         >
+            <div className='search_container'>
             <Lens className="search_symbol" ></Lens>
             <input className="search_input"
                 type="text"
@@ -55,6 +58,7 @@ export const Input = () => {
                 onChange={(e) => setInputLoc(e.target.value)}
             />
 
+</div>
 
 
             {(isFocused && possibleLocations && possibleLocations.length) ? <div className="search_suggestion">

@@ -85,7 +85,9 @@ export const getWeatherByCoordinates = (coords) => {
             dispatch(getWeatherByLocation({
                 lat: coords.latitude,
                 lon: coords.longitude,
-                name: response.data[0].name
+                name: response.data[0].name,
+                country: response.data[0].country,
+                state: response.data[0].state,
             }))
         }).catch((error) => {
             console.error(error);

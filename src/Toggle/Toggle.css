@@ -9,7 +9,8 @@
 
 .fahrenheit,
 .celcius {
-    padding: 10px;
+    padding:  6px 10px 6px 10px;
+    cursor: pointer;
 }
 
 .fahrenheit:hover,
