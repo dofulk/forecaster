@@ -16,3 +16,8 @@ $ cd ../lorem
 $ npm install
 $ npm start
 ```
+## Testing
+You can run tests with:
+ ```
+ $ npm test
+ ```
