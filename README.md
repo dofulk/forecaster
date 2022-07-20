@@ -8,9 +8,8 @@ Get the weather forecast from around the world. Written in react with redux
 
 ## Features
 
-Get the weather forecast based on your location.
-
-Search for the forecast from any city in the world.
+* Get the weather forecast based on your location.
+* Search for the forecast from any city in the world.
 
 ## Setup
 To run this project, install it locally using npm:
